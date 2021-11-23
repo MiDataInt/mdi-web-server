@@ -1,0 +1,55 @@
+
+/*app must control all scrolling*/
+html, body {
+    overflow: hidden;
+    background-color: #fcfcfc;
+}
+/*Maize and Blue color theme*/
+.navbar {
+    background-color: #00274C !important;
+    padding: 5px;
+}
+/*tweak header element layout*/
+.portal-logo {
+    margin-right: 8px; 
+}
+.portal-name {
+    color: #FFCB05 !important;
+    font-size: 1.05em;
+    margin-right: 8px;
+}
+.portal-name:hover {
+    color: #fbf2da !important;
+}
+/*navbar drop down menus*/
+.nav-button-div {
+    margin-right: 8px;     
+}
+.nav-button {
+    color: #F2D384 !important;
+    font-size: 1.05em;  
+    background-color: transparent;
+    border: none;
+}
+.nav-button:hover {
+    color: #fbf2da !important;
+}
+.dropdown-item:active, .dropdown-item:focus {
+    color: white;
+    background-color: #264767;
+}
+/*the app pane i.e. business end*/
+#app-frame {
+    height: 1000px;
+    border: none;
+}
+/*app loading spinner*/
+.navbar-spinner-div {
+    visibility: hidden;
+    margin-top: 100px;
+}
+.navbar-spinner {
+    width: 65px;
+    height: 65px;
+}
+

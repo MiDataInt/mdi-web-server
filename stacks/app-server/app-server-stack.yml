@@ -1,0 +1,85 @@
+
+#------------------------------------------------------------------------
+# the app-server stack defines Docker Swarm services that:
+#   run the single common Shiny app that:
+#       is referred to as either 'app-server' or 'magc-portal-apps'
+#       serves all analysis apps within a single-page-application (SPA)
+# these services run as one task per worker node and share data via NFS/EFS
+#------------------------------------------------------------------------
+
+# use docker-compose v3 to enable Swarm deploy and stacks
+version: "3.8"
+  
+services:
+    # single service for all R Shiny-based data analysis apps
+    app-server:
+        # a version of magc-portal-apps can serve all prior versions also
+        image: ${DOCKER_REGISTRY}/magc-portal/app-server:${VERSION}
+        configs:
+          - source: globus_config
+            target: /srv/magc-portal/globus_config.yml
+        command: ["Rscript", "/srv/magc-portal/start-app-server.R"]
+        environment:
+            WEB_DOMAIN: ${WEB_DOMAIN}
+            # TODO: delete this when public
+            GITHUB_PAT: ${GITHUB_PAT}
+        networks:
+            - public-server
+        volumes:
+        #    # TODO: not sure if this needs to be a bind mount with NFS/EFS
+        #    # see instructions on internet, also AWS ECS; but this works
+             - ${PORTAL_DIR}/magc-portal-data:/srv/magc-portal/magc-portal-data
+        deploy:
+            # one task per app-server node (global _does_ obey placement constraints)
+            mode: global
+            # or here we scale to multiple tasks per app-server-node
+            #replicas: 2
+            placement:
+                constraints:
+                    - node.labels.app-server-node==true   
+            labels:
+                - traefik.enable=true                
+                # low priority, allow other nodes first chance at routing
+                - traefik.http.routers.app-server.priority=1                   
+                - traefik.http.routers.app-server.rule=Host(`${WEB_DOMAIN?Variable not set}`)
+                - traefik.http.routers.app-server.entryPoints=https
+                - traefik.http.routers.app-server.tls=true
+                - traefik.http.routers.app-server.tls.certresolver=lets-encrypt
+                # communicate to Shiny on port 3838
+                - traefik.http.services.app-server.loadbalancer.server.scheme=http
+                - traefik.http.services.app-server.loadbalancer.server.port=3838
+                # cookies enforce sticky sessions to same container from one client
+                - traefik.http.services.app-server.loadbalancer.sticky.cookie=true
+                - traefik.http.services.app-server.loadbalancer.sticky.cookie.name=shiny-task
+                - traefik.http.services.app-server.loadbalancer.sticky.cookie.httpOnly=true
+                - traefik.http.services.app-server.loadbalancer.sticky.cookie.secure=true
+                - traefik.http.services.app-server.loadbalancer.sticky.cookie.sameSite=strict
+# using Docker Swarm configs help reduce need for bind mounts to containers
+# is created on the swarm manager and shared to workers
+configs:
+    globus_config:
+        file: ${PORTAL_DIR}/config/globus_config.yml
+networks:
+    # network for Traefik to route to MAGC Portal tasks
+    public-server:
+        external: true
+
+
+    #whoami:
+    #    image: inanimate/echo-server
+    #    networks:
+    #        - public-server
+    #    deploy:
+    #        replicas: 1
+    #        placement:
+    #            constraints:
+    #                - node.labels.app-server-node==true
+    #        labels:
+    #            - traefik.enable=true                
+    #            - traefik.http.routers.app-server-whoami.rule=Host(`${WEB_DOMAIN?Variable not set}`) && Path(`/whoami`)
+    #            - traefik.http.routers.app-server-whoami.entryPoints=https
+    #            - traefik.http.routers.app-server-whoami.tls=true
+    #            - traefik.http.routers.app-server-whoami.tls.certresolver=lets-encrypt
+    #            - traefik.http.services.app-server-whoami.loadbalancer.server.scheme=http
+    #            - traefik.http.services.app-server-whoami.loadbalancer.server.port=8080
+

@@ -1,0 +1,50 @@
+.
+├── README
+├── README.md
+├── build-image.sh
+├── deploy-stack.sh
+├── grep-build-error.sh
+├── show-swarm-status.sh
+├── stacks
+│   ├── app-server
+│   │   ├── Dockerfile
+│   │   ├── app-server-stack.yml
+│   │   ├── pull-code-repositories.sh
+│   │   ├── purge-developer-tools.sh
+│   │   ├── start-app-server.R
+│   │   └── update-app-server.sh
+│   ├── docker-access
+│   │   └── docker-access-stack.yml
+│   └── web-server
+│       ├── navbar
+│       │   ├── Dockerfile
+│       │   ├── html
+│       │   │   ├── under_development.html
+│       │   │   └── welcome.html
+│       │   ├── index.html
+│       │   ├── nginx.conf
+│       │   └── www
+│       │       ├── logo
+│       │       │   ├── android-chrome-192x192.png
+│       │       │   ├── android-chrome-512x512.png
+│       │       │   ├── apple-touch-icon.png
+│       │       │   ├── favicon-16x16.png
+│       │       │   ├── favicon-32x32.png
+│       │       │   ├── favicon.ico
+│       │       │   ├── logo.png
+│       │       │   └── site.webmanifest
+│       │       ├── navbar.css
+│       │       └── navbar.js
+│       ├── session-initialization
+│       │   ├── Dockerfile
+│       │   ├── old-nginx
+│       │   │   ├── Dockerfile
+│       │   │   ├── index.html
+│       │   │   └── nginx.conf
+│       │   └── session-initialization.js
+│       ├── traefik-config.yml
+│       └── web-server-stack.yml
+├── tree.txt
+└── update-app-servers.sh
+
+10 directories, 37 files

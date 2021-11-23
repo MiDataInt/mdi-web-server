@@ -1,0 +1,113 @@
+
+#------------------------------------------------------------------------
+# the web-server stack defines Docker Swarm services that:
+#   respond to requests from the public internet
+#   route requests to other Swarm services
+#   show web pages other than the MAGC Portal app interface
+# these services run as single tasks (containers) on the web-server node
+#------------------------------------------------------------------------
+
+# use docker-compose v3 to enable Swarm deploy and stacks
+version: "3.8"
+  
+services:
+    # reverse-proxy/load balancer for incoming internet traffic
+    traefik:
+        image: traefik:v2.2
+        # see config file for details on Traefik setup
+        command: --configfile /traefik-config.yml
+        configs:
+          - source: traefik_config
+            target: /traefik-config.yml        
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            # for polling Docker
+            - docker-access
+            # for routing to other services
+            - public-server
+        volumes:
+          # mount the volume to store the certificates (NB: not a bind mount)
+          - TLS-certificates:/certificates
+        deploy:
+            # must run on our one designated web server node           
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.web-server-node==true
+  
+    # service to set a cookie to initialize a user session
+    session-initialization:
+        image: ${DOCKER_REGISTRY}/magc-portal/session-initialization:${VERSION}
+        networks:
+            - public-server
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.web-server-node==true
+            labels:
+                - traefik.enable=true
+                - traefik.http.routers.session-initialization.rule=Host(`${WEB_DOMAIN}`) && Path(`/session`)
+                - traefik.http.routers.session-initialization.entryPoints=https
+                - traefik.http.routers.session-initialization.tls=true
+                - traefik.http.routers.session-initialization.tls.certresolver=lets-encrypt               
+                - traefik.http.services.session-initialization.loadbalancer.server.scheme=http
+                - traefik.http.services.session-initialization.loadbalancer.server.port=8080 
+         
+# using Docker Swarm configs help reduce need for bind mounts to containers
+# is created on the swarm manager and shared to workers
+configs:
+    traefik_config:
+        file: ${PORTAL_DIR}/magc-portal-server/stacks/web-server/traefik-config.yml
+volumes:
+    # create a Docker volume to store the TLS certificates
+    # is created (without sharing) on the web-server node that runs Traefik
+    TLS-certificates:
+networks:
+    # network for Traefik to poll docker engine via read-only proxy
+    docker-access:
+        external: true
+    # network for Traefik to route to MAGC Portal tasks
+    public-server:
+        external: true
+
+
+    ## welcome page and navbar to individual MAGC Portal offerings
+    #navbar:
+    #    image: ${DOCKER_REGISTRY}/magc-portal/navbar:latest
+    #    networks:
+    #        - public-server
+    #    deploy:
+    #        replicas: 1
+    #        placement:
+    #            constraints:
+    #                - node.labels.web-server-node==true
+    #        labels:
+    #            - traefik.enable=true
+    #            - traefik.http.routers.navbar.rule=Host(`${WEB_DOMAIN?Variable not set}`) && PathPrefix(`/`)
+    #            - traefik.http.routers.navbar.entryPoints=https
+    #            - traefik.http.routers.navbar.tls=true
+    #            - traefik.http.routers.navbar.tls.certresolver=lets-encrypt
+    #            # low priority, allow other nodes first chance at routing
+    #            - traefik.http.routers.navbar.priority=1                
+    #            - traefik.http.services.navbar.loadbalancer.server.scheme=http
+    #            - traefik.http.services.navbar.loadbalancer.server.port=8080
+
+    # for setup debug
+    #whoami:
+    #    image: inanimate/echo-server
+    #    networks:
+    #        - public-server
+    #    deploy:
+    #        replicas: 1
+    #        labels:
+    #            - traefik.enable=true
+    #            - traefik.http.routers.whoami.rule=Host(`${WEB_DOMAIN?Variable not set}`) && Path(`/whoami`)
+    #            - traefik.http.routers.whoami.entryPoints=https
+    #            - traefik.http.routers.whoami.tls=true
+    #            - traefik.http.routers.whoami.tls.certresolver=lets-encrypt
+    #            - traefik.http.services.whoami.loadbalancer.server.scheme=http
+    #            - traefik.http.services.whoami.loadbalancer.server.port=8080
+
