@@ -1,55 +1,61 @@
+# Michigan Data Interface
 
-# MAGC Portal Server
+The [Michigan Data Interface](https://midataint.github.io/) (MDI) is a framework for developing,
+installing and running a variety of HPC data analysis pipelines
+and interactive R Shiny data visualization applications
+within a standardized design and implementation interface.
 
-This is the repository for the web server of the analysis portal
-of the Michigan (M) Advanced Genomics Core (AGC).
+## Repository contents
 
-This repository contains all code required to run the public web
-server. It does not contain the code for the web page itself
-(see repository 'magc-portal-apps'). It also does not contain three
-required server-specific configuration files (please inquire if
-you need to replicate our public server).
+Data analysis in the MDI is logically separated into 
+[two stages of code execution](https://midataint.github.io/docs/analysis-flow/) 
+called Stage 1 HPC **pipelines**
+and Stage 2 web applications (i.e., **apps**).
 
-Most users will NOT want to use 'magc-portal-server', but instead
-will run the MAGC Portal on their local computer using the
-'magc-portal-apps' repository. 
+This is the repository for the **MDI apps web server**. 
+It will help you create a publicly addressable web server to run the MDI
+web page with secure access, e.g., on an Amazon Web Services intance.
+It does this by providing scripts to build and run a series of 
+Docker containers.
+
+You do not need this repository to run the MDI on your local computer
+or on a remote server via SSH, only if you wish to have a
+web page running the MDI at a permanent URL such as 'johndoelab.org'. 
+
+### Related repositories
+
+This repository does not contain web apps themselves or even the MDI
+apps framework - please explore these repositories for those components:
+
+- <https://github.com/MiDataInt/mdi-manager>
+- <https://github.com/MiDataInt/mdi-apps-framework>
+- <https://github.com/MiDataInt/mdi-apps-suite-template>
 
 ## General Description
 
-### Microservices run as containers in a Docker Swarm
+### Microservices run as Docker containers
 
-The Portal is run as a set of microservices from within
-Docker containers. Those containers are managed as a Docker Swarm.
+The web server is run as a set of microservices from within
+Docker containers. 
 
-https://docs.docker.com/engine/swarm/
+https://www.docker.com/
 
-One container running the Traefik reverse proxy/load balancer
-routes requests to the other microservices.
+One container runs the Traefik reverse proxy/load balancer
+and routes requests to the other microservices.
 
 https://docs.traefik.io/
 
-This repository has all files to build all microservice images.
-It also has helper scripts to deploy the Swarm service stacks.
-
-### Data analysis applications mostly utilize R Shiny
-
-One microservice called 'app-server' runs a single R Shiny
-application that provides a common framework and interface
-for a series of specific data analysis apps. All apps
-are/can be served by any app-server task intance.
-
-Please note that the configuration is flexible and can
-adapt to any type of web analysis scripting platform, by simply
-creating a new framework or other distinct images and services.
+Other containers run the MDI,i.e., R Shiny, and other required 
+support services. This repository has all files required to easily 
+build all microservice images.
 
 ## Installation and Use
 
-The Portal will run on any machine that can run Docker, including
-desktop or laptop computers. No other software installations
-are required; it is all maintained in the Docker images/containers.
-Thus, clone this repository, configure, build and deploy.
+The MDI web server will run on any machine that can run Docker and
+that is addressable on the public internet. Unless you have a reason
+to use own server machine, we strongly recommend using Amazon Web
+Services to run a virtual server in the cloud.
 
-To run in multi-user, i.e. 'server' mode, the server must have a
-permanent internet domain name mapped to it via DNS. This allows
-SSL/TLS encryption security via Let's Encrypt.
-
+To use external authentication services, e.g., Google or Globus, 
+your server must have a permanent internet domain name mapped to it 
+via DNS. This allows SSL/TLS encryption security via Let's Encrypt.

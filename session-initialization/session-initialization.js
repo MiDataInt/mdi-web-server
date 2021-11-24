@@ -1,4 +1,3 @@
-
 // use Express server
 var crypto  = require('crypto');
 var express = require('express');
@@ -30,4 +29,3 @@ app.get('/session', function(req, res){
 });
 
 app.listen(8080);
-

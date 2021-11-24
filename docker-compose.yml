@@ -1,0 +1,120 @@
+#------------------------------------------------------------------------
+# docker-compose file that declares the MDI web services
+#------------------------------------------------------------------------
+version: "3.9"
+
+# create services (with potentially one or running multiple containers per service)
+services:
+
+  # Traefik reverse proxy and load balancer
+  traefik:
+    image: traefik:v2.5
+    depends_on:
+      - docker-proxy
+    restart: always      
+    command: 
+      - "--log.filePath=/traefik.log"
+      - "--log.level=ERROR"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=docker-access"
+      - "--providers.docker.endpoint=tcp://docker-proxy:2375"
+      - "--entrypoints.https.address=:443"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.http.http.redirections.entryPoint.to=https"
+      - "--certificatesResolvers.letsencrypt.acme.storage=/certificates/acme.json"
+      - "--certificatesResolvers.letsencrypt.acme.httpChallenge.entrypoint=http"
+      - "--certificatesResolvers.letsencrypt.acme.caServer=https://acme-v02.api.letsencrypt.org/directory"     
+      - "--certificatesResolvers.letsencrypt.acme.email=${WEBMASTER_EMAIL}"
+      # enable the dashboard to debug this compose stack
+      # - "--api.insecure=true"      
+    networks:
+      - docker-access
+      - public-server
+    ports:
+      - 443:443
+      - 80:80
+      # - 8080:8080
+    volumes:
+      - TLS-certificates:/certificates
+
+  # Docker socket proxy to limit Traefik access to the docker engine
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy
+    depends_on:
+      - session-initialization
+      - app-server    
+    environment:
+      # only enable Docker API for container discovery; "1" means "true" or "allow"  
+      CONTAINERS: 1 
+    networks:
+        - docker-access  
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  # service to set a cookie to initialize a user session
+  session-initialization:
+    build: ./session-initialization
+    networks:
+      - public-server
+    environment:
+      - WEB_DOMAIN
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.session-initialization.rule=Host(`${WEB_DOMAIN}`) && Path(`/session`)"
+      -  traefik.http.routers.session-initialization.entryPoints=https
+      -  traefik.http.routers.session-initialization.tls.certresolver=letsencrypt         
+
+  # the MDI, i.e., R Shiny, web applications server
+  app-server:
+    build: 
+      context: ..
+      dockerfile: /srv/mdi/mdi-web-server/mdi-apps-server/Dockerfile
+    command: ["Rscript", "/srv/mdi/start-app-server.R"]
+    networks:
+      - public-server    
+    environment:
+      - WEB_DOMAIN
+    labels:
+      - traefik.enable=true
+      # low priority, allow other services first chance at routing
+      - traefik.http.routers.app-server.priority=1   
+      - "traefik.http.routers.app-server.rule=Host(`${WEB_DOMAIN}`)"
+      - traefik.http.routers.app-server.entryPoints=https
+      - traefik.http.routers.app-server.tls.certresolver=letsencrypt      
+      - traefik.http.services.app-server.loadbalancer.server.scheme=http
+      - traefik.http.services.app-server.loadbalancer.server.port=3838
+      - traefik.http.services.app-server.loadbalancer.sticky.cookie.name=mdi-apps
+      - traefik.http.services.app-server.loadbalancer.sticky.cookie.secure=true      
+      - traefik.http.services.app-server.loadbalancer.sticky.cookie.httpOnly=true
+      - traefik.http.services.app-server.loadbalancer.sticky.cookie.sameSite=strict
+    volumes:
+      - "../config:/srv/mdi/config"
+
+  # # test container for debugging this compose stack
+  # whoami:
+  #   image: traefik/whoami
+  #   networks:
+  #       - public-server   
+  #   labels:
+  #     - traefik.enable=true
+  #     - "traefik.http.routers.whoami.rule=Host(`${WEB_DOMAIN}`) && Path(`/whoami`)"
+  #     - traefik.http.routers.whoami.entrypoints=https
+  #     - traefik.http.routers.whoami.tls.certresolver=letsencrypt
+  #     - traefik.http.services.whoami.loadbalancer.server.scheme=http
+  #     - traefik.http.services.whoami.loadbalancer.server.port=80      
+  #     - traefik.http.services.whoami.loadbalancer.sticky.cookie.name=mdi-whoami
+  #     - traefik.http.services.whoami.loadbalancer.sticky.cookie.secure=true
+  #     - traefik.http.services.whoami.loadbalancer.sticky.cookie.httpOnly=true
+
+# create Docker volumes ...
+volumes:
+  # ... to store TLS certificates
+  TLS-certificates:
+
+# declare docker networks (created previously by initialize script) ...
+networks:
+    # ... for Traefik to poll docker engine via read-only proxy
+    docker-access:
+    # ... for Traefik to route to MDI session and app servers
+    public-server:
