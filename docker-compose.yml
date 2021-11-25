@@ -68,13 +68,14 @@ services:
   # the MDI, i.e., R Shiny, web applications server
   app-server:
     build: 
-      context: ..
-      dockerfile: /srv/mdi/mdi-web-server/mdi-apps-server/Dockerfile
-    command: ["Rscript", "/srv/mdi/start-app-server.R"]
+      context: ./mdi-apps-server
+    command: ["Rscript", "start-app-server.R"]
     networks:
       - public-server    
     environment:
       - WEB_DOMAIN
+    volumes:
+      - mdi-dir:${MDI_DIR}     
     labels:
       - traefik.enable=true
       # low priority, allow other services first chance at routing
@@ -88,8 +89,6 @@ services:
       - traefik.http.services.app-server.loadbalancer.sticky.cookie.secure=true      
       - traefik.http.services.app-server.loadbalancer.sticky.cookie.httpOnly=true
       - traefik.http.services.app-server.loadbalancer.sticky.cookie.sameSite=strict
-    volumes:
-      - "../config:/srv/mdi/config"
 
   # # test container for debugging this compose stack
   # whoami:
@@ -111,6 +110,8 @@ services:
 volumes:
   # ... to store TLS certificates
   TLS-certificates:
+  # ... to install the MDI and store its shared working libraries, data, etc.
+  mdi-dir:
 
 # declare docker networks (created previously by initialize script) ...
 networks:

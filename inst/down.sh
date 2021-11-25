@@ -1,5 +1,6 @@
 # get ready
-source config/server.env
+export MDI_DIR=$PWD
+source config/server.sh
 cd mdi-web-server
 
 # go

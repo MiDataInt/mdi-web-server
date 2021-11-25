@@ -1,6 +1,6 @@
 # launch the web server
 mdi::run(
-  mdiDir = "/srv/mdi",
+  mdiDir = Sys.getenv('MDI_DIR'),
   dataDir = NULL,
   hostDir = NULL,
   mode = "server",
