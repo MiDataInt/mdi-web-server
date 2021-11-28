@@ -74,6 +74,7 @@ services:
       - public-server    
     environment:
       - WEB_DOMAIN
+      - IS_DEBUG
     volumes:
       - mdi-dir:${MDI_DIR}     
     labels:
