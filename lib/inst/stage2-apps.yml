@@ -10,11 +10,11 @@
 access_control: null
 
 #--------------------------------------------------------------
-# Named server file paths that users _may_ be granted access to browse
+# Named server file paths to which users _may_ be granted browsing access
 #--------------------------------------------------------------
 paths:
-  demo1: /path/to/demo1
-  demo2: /path/to/demo2
+  Demo1: /path/to/demo1
+  Demo2: /srv/data/demo2
 
 #--------------------------------------------------------------
 # Client information when access_control = oauth2
@@ -24,7 +24,7 @@ paths:
 #   globus  see https://docs.globus.org/api/auth/ and https://developers.globus.org/
 #-------------------------------------------------------------
 oauth2:
-  host: google
+  host: null
   client:
     key:    null # also called a client ID
     secret: null
@@ -32,30 +32,42 @@ oauth2:
 #--------------------------------------------------------------
 # Users granted access when access_control = oauth2
 #--------------------------------------------------------------
-#   - email addresses must be quoted to be valid YAML
 #   - email addresses may include wildcards (*)
-#   - the highest permission level in any matching entry will be granted
+#   - the _first_ matching email is used, so put wildcards with restricted access last
 #   - paths under 'paths: read' will be read-only for the user
 #   - paths under 'paths: write' can additionally be written to (implies read)
 #--------------------------------------------------------------
 # Paths and apps may be entered as:
 #   all, to give access to all named paths or all apps
-#   null, to deny all access (e.g., to disable file browsing)
-#   one, or an array, of named paths or apps
+#   null, to deny all access (i.e., to disable file browsing)
+#   one, or an array, of path or app names
 #--------------------------------------------------------------
-users:
-  "*@*": # i.e., all authenticated email addresses
+# Optionally, 'paths' may contain named entries for:
+#   load_default      name of the readable path to start with for loading files
+#   bookmark_default  name of the writable path to start with for saving bookmarks
+#--------------------------------------------------------------
+user_groups:
+  full_access:
+    emails:
+      - xxxxx@umich.edu # i.e., specific authorized user emails
+      - xxxxx@umich.edu
+    paths:
+      read: all
+      write: Demo2
+    apps: all
+  demo1:
+    emails:
+      - *@umich.edu # i.e., anyone authenticated to a Michigan email address
+    paths:
+      read: Demo1
+      write: null
+    apps: all
+  public:
+    emails: 
+      - *@* # i.e., all authenticated email addresses
     paths: null
     apps:
       - demoApp
-  "*@umich.edu": # i.e., all users with an authenticated Michigan email
-    paths:
-      read: demo1
-  "wilsonte@umich.edu":
-    paths:
-      read: all
-      write: demo2
-    apps: all
 
 #--------------------------------------------------------------
 # Named access keys recognized when access_control = keys
@@ -63,12 +75,13 @@ users:
 #   hash  _encrypted_ version of the key that should be entered by a user
 #         call mdi::password_store(key) to get the value to enter below
 #--------------------------------------------------------------
-# Paths and apps are entered similarly to users, above
+# Paths and apps are entered similarly to users_groups, above
 #--------------------------------------------------------------
 keys:
-  team_members:
+  full_access:
     hash: 5fr9uc24m0eqjbgxp1wnva6hd8okiltz_df6e4823c701569a0a2adb899f041e9d
-    paths:
+    paths: 
       read: all
-      write: demo2
+      write: all
     apps: all
+# etc., similar to above

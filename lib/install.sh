@@ -1,9 +1,6 @@
-# get ready
-export MDI_DIR=$PWD
-source config/server.sh
-cd mdi-web-server
-
-# go
+# use an ephemeral apps-server container to
+#   - install the MDI
+#   - update this server's configuration
 docker-compose run \
   --no-deps \
   --rm \

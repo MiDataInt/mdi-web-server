@@ -5,7 +5,7 @@
 mkdir -p $MDI_DIR/config
 cp -r /srv/config/* $MDI_DIR/config
 
-# update the installation manager, if available since Docker image was created
+# update the installation manager, if new since Docker image was created
 Rscript -e "remotes::install_github('MiDataInt/mdi-manager')"
 
 # use the manager to install the framework repositories and R packages

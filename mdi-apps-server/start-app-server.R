@@ -4,7 +4,7 @@ mdi::run(
   dataDir = NULL,
   hostDir = NULL,
   mode = "server",
-  install = TRUE, # ???
+  install = TRUE,
   url = paste0("https://", Sys.getenv('WEB_DOMAIN'), '/'),
   port = 3838, # reverse proxy responds on 443, R responds on 3838 on the docker public-server network
   browser = FALSE,

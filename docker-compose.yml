@@ -38,7 +38,7 @@ services:
     volumes:
       - TLS-certificates:/certificates
 
-  # Docker socket proxy to limit Traefik access to the docker engine
+  # Docker socket proxy to limit Traefik's access to the docker engine
   docker-proxy:
     image: tecnativa/docker-socket-proxy
     depends_on:
@@ -50,9 +50,10 @@ services:
     networks:
         - docker-access  
     volumes:
+      # only this proxy has direct access to the Docker engine
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  # service to set a cookie to initialize a user session
+  # service to set a secure cookie to initialize a user session, via https://WEB_DOMAIN/session
   session-initialization:
     build: ./session-initialization
     networks:
@@ -76,7 +77,10 @@ services:
       - WEB_DOMAIN
       - IS_DEBUG
     volumes:
-      - mdi-dir:${MDI_DIR}     
+      # this permanent Docker volume stores the MDI apps installation, R packages, etc.
+      - mdi-dir:${MDI_DIR}
+      # this bind mount is ideal for data transfers into and out of the web page
+      - /srv/data:/srv/data     
     labels:
       - traefik.enable=true
       # low priority, allow other services first chance at routing
@@ -114,9 +118,9 @@ volumes:
   # ... to install the MDI and store its shared working libraries, data, etc.
   mdi-dir:
 
-# declare docker networks (created previously by initialize script) ...
+# declare Docker networks ...
 networks:
-    # ... for Traefik to poll docker engine via read-only proxy
+    # ... for Traefik to poll Docker engine via read-only proxy
     docker-access:
-    # ... for Traefik to route to MDI session and app servers
+    # ... for Traefik to route to session and app servers
     public-server:

@@ -1,3 +1,5 @@
+// this simply Node.js server sets a secure session cookie, via https://WEB_DOMAIN/session
+
 // use Express server
 var crypto  = require('crypto');
 var express = require('express');

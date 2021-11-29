@@ -12,7 +12,7 @@ Data analysis in the MDI is logically separated into
 called Stage 1 HPC **pipelines**
 and Stage 2 web applications (i.e., **apps**).
 
-This is the repository for the **MDI apps web server**. 
+This is the repository for the **MDI apps public server**. 
 It will help you create a publicly addressable web server to run the MDI
 web page with secure access, e.g., on an Amazon Web Services intance.
 It does this by providing scripts to build and run a series of 
@@ -25,7 +25,7 @@ web page running the MDI at a permanent URL such as 'johndoelab.org'.
 ### Related repositories
 
 This repository does not contain web apps themselves or even the MDI
-apps framework - please explore these repositories for those components:
+apps framework. Please explore these repositories for those components:
 
 - <https://github.com/MiDataInt/mdi-manager>
 - <https://github.com/MiDataInt/mdi-apps-framework>
@@ -45,17 +45,18 @@ and routes requests to the other microservices.
 
 https://docs.traefik.io/
 
-Other containers run the MDI,i.e., R Shiny, and other required 
-support services. This repository has all files required to easily 
-build all microservice images.
+Other containers run the MDI, i.e., R Shiny, and other required 
+support services. This repository has all files needed to easily 
+build and manage all microservice images.
 
 ## Installation and Use
 
 The MDI web server will run on any machine that can run Docker and
 that is addressable on the public internet. Unless you have a reason
-to use own server machine, we strongly recommend using Amazon Web
-Services to run a virtual server in the cloud.
+to use own server machine, we recommend using Amazon Web Services (AWS) 
+to run a virtual server in the cloud.
 
 To use external authentication services, e.g., Google or Globus, 
 your server must have a permanent internet domain name mapped to it 
 via DNS. This allows SSL/TLS encryption security via Let's Encrypt.
+This is easily obtained using AWS Route 53.
