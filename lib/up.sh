@@ -6,6 +6,7 @@ export IS_DEBUG="FALSE"
 if [ "$1" != "" ]; then
   DETACH="" # thus, docker-compose shows debug app-server log in console
   export IS_DEBUG="TRUE" 
+  export N_SERVER_PROCESSES=1
 fi
 
 # launch server

@@ -32,6 +32,7 @@ ARG GITHUB_PAT
 ENV GITHUB_PAT=$GITHUB_PAT
 
 # install the installation manager
+ENV MANAGER_INSTALL_HOOK=1
 RUN Rscript -e "remotes::install_github('MiDataInt/mdi-manager')"
 
 # hard set installation directory in image
