@@ -10,11 +10,12 @@
 access_control: null
 
 #--------------------------------------------------------------
-# Named server file paths to which users _may_ be granted browsing access
+# Named server file paths that users _may_ be granted access to browse
 #--------------------------------------------------------------
 paths:
-  Demo1: /path/to/demo1
-  Demo2: /srv/data/demo2
+  demo1: /path/to/demo1
+  demo2: /path/to/demo2
+job_default: demo1 # the path used as a default by Pipeline Runner
 
 #--------------------------------------------------------------
 # Client information when access_control = oauth2
@@ -24,7 +25,7 @@ paths:
 #   globus  see https://docs.globus.org/api/auth/ and https://developers.globus.org/
 #-------------------------------------------------------------
 oauth2:
-  host: null
+  host: google 
   client:
     key:    null # also called a client ID
     secret: null
@@ -42,32 +43,39 @@ oauth2:
 #   null, to deny all access (i.e., to disable file browsing)
 #   one, or an array, of path or app names
 #--------------------------------------------------------------
-# Optionally, 'paths' may contain named entries for:
+# Optionally, paths may contain named entries for:
 #   load_default      name of the readable path to start with for loading files
 #   bookmark_default  name of the writable path to start with for saving bookmarks
 #--------------------------------------------------------------
 user_groups:
-  full_access:
+  public_access:
     emails:
-      - xxxxx@umich.edu # i.e., specific authorized user emails
-      - xxxxx@umich.edu
-    paths:
-      read: all
-      write: Demo2
-    apps: all
-  demo1:
-    emails:
-      - *@umich.edu # i.e., anyone authenticated to a Michigan email address
-    paths:
-      read: Demo1
-      write: null
-    apps: all
-  public:
-    emails: 
       - *@* # i.e., all authenticated email addresses
-    paths: null
-    apps:
-      - demoApp
+    paths: 
+      read: null
+      write: null
+      load_default: null
+      bookmark_default: null
+    apps: demoApp
+  limited_access:
+    emails:
+      - *@umich.edu # i.e., all users with an authenticated Michigan email
+    paths: 
+      read: demo1
+      write: null
+      load_default: demo1
+      bookmark_default: null
+    apps: all
+  full_access:
+    emails: # list of specific users authenticated by login email
+      - johndoe@umich.edu
+      - janedoe@umich.edu
+    paths: 
+      read: all
+      write: demo2
+      load_default: demo1
+      bookmark_default: demo2
+    apps: all
 
 #--------------------------------------------------------------
 # Named access keys recognized when access_control = keys
@@ -75,13 +83,12 @@ user_groups:
 #   hash  _encrypted_ version of the key that should be entered by a user
 #         call mdi::password_store(key) to get the value to enter below
 #--------------------------------------------------------------
-# Paths and apps are entered similarly to users_groups, above
+# Paths and apps are entered similarly to users, above
 #--------------------------------------------------------------
 keys:
-  full_access:
+  team_members:
     hash: 5fr9uc24m0eqjbgxp1wnva6hd8okiltz_df6e4823c701569a0a2adb899f041e9d
     paths: 
       read: all
-      write: all
+      write: demo2
     apps: all
-# etc., similar to above

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# help information
+function show_usage {
+    echo
+    echo "!!! $1 !!!"
+    echo
+    echo "usage:  ./server <COMMAND> ..."
+    echo
+    echo "server execution commands (in order of usage):"
+    echo "    build     run docker-compose build to create all needed Docker images"
+    echo "    install   update the server config, clone GitHub repos, install R packages"
+    echo "    up        launch all containers to run the MDI apps server"
+    echo "    down      stop and remove any running containers to shut down the apps server"
+    echo
+    echo "additional resource management commands:"
+    echo "    resource  run a script to download/install data into the permanent Docker volume"
+    echo "    bash      bring up an interactive bash terminal in a new apps-server container"
+    echo
+    exit 1
+}
+
+# get ready
+export MDI_DIR=$PWD
+source config/server.sh
+cd mdi-web-server
+
+# check for valid command
+if [ "$1" = "" ]; then show_usage "missing command"; fi
+SCRIPT="$MDI_DIR/mdi-web-server/lib/$1.sh"
+if [ ! -f $SCRIPT ]; then show_usage "unknown command: $1"; fi
+
+# pass control to the target command script
+shift
+source $SCRIPT
