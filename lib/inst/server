@@ -22,9 +22,9 @@ function show_usage {
 }
 
 # get ready
-export MDI_DIR=$PWD
-source config/server.sh
-cd mdi-web-server
+export MDI_DIR=/srv/mdi
+source $MDI_DIR/config/server.sh
+cd $MDI_DIR/mdi-web-server
 
 # check for valid command
 if [ "$1" = "" ]; then show_usage "missing command"; fi
