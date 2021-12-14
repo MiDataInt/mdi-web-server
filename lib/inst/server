@@ -14,6 +14,7 @@ function show_usage {
     echo "    down      stop and remove any running containers to shut down the apps server"
     echo
     echo "additional resource management commands:"
+    echo "    edit      use nano to edit one of the server configuration files"
     echo "    resource  run a script to download/install data into the permanent Docker volume"
     echo "    bash      bring up an interactive bash terminal in a new apps-server container"
     echo

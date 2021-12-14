@@ -16,16 +16,16 @@ variables:
 # defaults for options in data.yml templates
 shared:
   resources:
-    tmp-dir: /tmpssd
+    tmp-dir: /tmpssd  
     tmp-dir-large: /tmp
 
 # configure a shared conda implementation
 conda:
-
+    
   # optional command to load conda for use (e.g. 'module load conda')
   # use null if conda is always available on the server where mdi is run
   load-command: module load $ANACONDA
-
+    
   # path to conda.sh initialization script
   # if null, tries $(conda info --base)/etc/profile.d/conda.sh
   profile-script: /sw/arcts/centos7/$ANACONDA/etc/profile.d/conda.sh
