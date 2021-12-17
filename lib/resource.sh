@@ -7,18 +7,18 @@ cd $MDI_DIR
 # file name of the resource script to run in the app-server container
 # e.g., 'download-data.sh'
 # must be found in the 'resource-scripts' directory
-RESOURCE_SCRIPT_NAME=$1
+TARGET_SCRIPT=$1
 
 # check target script
-TARGET_SCRIPT=resource-scripts/$RESOURCE_SCRIPT_NAME
+TARGET_SCRIPT=resource-scripts/$TARGET_SCRIPT
 if [ ! -f "$TARGET_SCRIPT" ]; then
     echo
     echo "unknown target script: $TARGET_SCRIPT"
     echo "usage:"
     echo
-    echo "  ./get-resource.sh <script-name.sh> ..."
+    echo "  server resource <TARGET_SCRIPT> ..."
     echo
-    echo "where 'script-name.sh' is found in 'resource-scripts"
+    echo "where 'TARGET_SCRIPT' is found in 'resource-scripts"
     echo
     exit 1
 fi
