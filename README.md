@@ -1,16 +1,16 @@
 # Michigan Data Interface
 
-The [Michigan Data Interface](https://midataint.github.io/) (MDI) is a framework for developing,
-installing and running a variety of HPC data analysis pipelines
-and interactive R Shiny data visualization applications
-within a standardized design and implementation interface.
+The [Michigan Data Interface](https://midataint.github.io/) (MDI) 
+is a framework for developing, installing and running a variety of 
+HPC data analysis pipelines and interactive R Shiny data visualization 
+applications within a standardized design and implementation interface.
 
 ## Repository contents
 
 Data analysis in the MDI is logically separated into 
 [two stages of code execution](https://midataint.github.io/docs/analysis-flow/) 
-called Stage 1 HPC **pipelines**
-and Stage 2 web applications (i.e., **apps**).
+called Stage 1 HPC **pipelines** and Stage 2 web applications (i.e., **apps**).
+Collectively, pipelines and apps are referred to as **tools**.
 
 This is the repository for the **MDI apps public server**. 
 It will help you create a publicly addressable web server to run the MDI
@@ -21,20 +21,8 @@ Docker containers.
 You do not need this repository to run the MDI on your local computer
 or on a remote server via SSH, only if you wish to have a
 web page running the MDI at a permanent URL such as 'johndoelab.org'. 
-
-### Related repositories
-
-This repository does not contain web apps themselves or even the MDI
-apps framework. Please explore these repositories for those components:
-
-- <https://github.com/MiDataInt/mdi-manager>
-- <https://github.com/MiDataInt/mdi-apps-framework>
-- <https://github.com/MiDataInt/mdi-apps-suite-template>
-
-For more information on the code we use to create the Amazon
-Machine Images recommended below, please see:
-
-- <https://github.com/MiDataInt/mdi-aws-mdi>
+Please read the [MDI documentation](https://midataint.github.io/) for 
+more information.
 
 ## General Description
 
