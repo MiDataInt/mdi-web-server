@@ -5,24 +5,20 @@ is a framework for developing, installing and running a variety of
 HPC data analysis pipelines and interactive R Shiny data visualization 
 applications within a standardized design and implementation interface.
 
-## Repository contents
-
-Data analysis in the MDI is logically separated into 
+Data analysis in the MDI is separated into 
 [two stages of code execution](https://midataint.github.io/docs/analysis-flow/) 
 called Stage 1 HPC **pipelines** and Stage 2 web applications (i.e., **apps**).
 Collectively, pipelines and apps are referred to as **tools**.
+Please read the [MDI documentation](https://midataint.github.io/) for 
+more information.
+
+## Repository contents
 
 This is the repository for the **MDI apps public server**. 
 It will help you create a publicly addressable web server to run the MDI
 web page with secure access, e.g., on an Amazon Web Services instance.
 It does this by providing scripts to build and run a series of 
 Docker containers.
-
-You do not need this repository to run the MDI on your local computer
-or on a remote server via SSH, only if you wish to have a
-web page running the MDI at a permanent URL such as 'johndoelab.org'. 
-Please read the [MDI documentation](https://midataint.github.io/) for 
-more information.
 
 ## General Description
 
