@@ -33,7 +33,7 @@ ARG GITHUB_PAT
 ENV GITHUB_PAT=$GITHUB_PAT
 
 # install the installation manager
-ENV MANAGER_INSTALL_HOOK=2
+ENV MANAGER_INSTALL_HOOK=1
 RUN Rscript -e "remotes::install_github('MiDataInt/mdi-manager')"
 
 # hard set installation directory in image
@@ -41,7 +41,7 @@ ARG MDI_DIR
 ENV MDI_DIR=$MDI_DIR
 
 # install server management tools in /srv/tools
-# the image launces in this directory
+# the image launches in this directory
 ENV TOOLS_DIR=/srv/tools
 WORKDIR $TOOLS_DIR
 
