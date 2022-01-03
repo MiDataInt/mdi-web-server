@@ -28,13 +28,13 @@ RUN apt-get update && apt-get install -y \
 # install 'remotes' to support R package installation from GitHub
 RUN Rscript -e "install.packages('remotes')"
 
-# set GitHub credentials
-ARG GITHUB_PAT
-ENV GITHUB_PAT=$GITHUB_PAT
-
 # install the installation manager
 ENV MANAGER_INSTALL_HOOK=1
 RUN Rscript -e "remotes::install_github('MiDataInt/mdi-manager')"
+
+# set GitHub credentials
+ARG GITHUB_PAT
+ENV GITHUB_PAT=$GITHUB_PAT
 
 # hard set installation directory in image
 ARG MDI_DIR
