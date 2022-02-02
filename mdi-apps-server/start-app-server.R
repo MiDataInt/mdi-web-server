@@ -1,6 +1,9 @@
 # set environment variable to honor system library in server images
 Sys.setenv(MDI_SYSTEM_R_LIBRARY = "/usr/local/lib/R/site-library")
 
+# update the installation manager, if new since Docker image was created
+remotes::install_github("MiDataInt/mdi-manager")
+
 # launch the web server
 mdi::run(
   mdiDir = Sys.getenv("MDI_DIR"),
