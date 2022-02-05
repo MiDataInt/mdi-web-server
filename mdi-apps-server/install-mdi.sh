@@ -15,7 +15,7 @@ export MDI_SYSTEM_R_LIBRARY=/usr/local/lib/R/site-library
 Rscript -e "remotes::install_github('MiDataInt/mdi-manager', Ncpus = $N_CPU)"
 
 # use the manager to install the MDI repositories and R packages
-Rscript -e "mdi::install(Sys.getenv('MDI_DIR'), confirm = FALSE, addToPATH = TRUE)"
+Rscript -e "mdi::install(Sys.getenv('MDI_DIR'), confirm = FALSE)"
 
 # remove R package tarballs to control image/container size
 rm -f /tmp/Rtmp*/downloaded_packages/*.tar.gz
