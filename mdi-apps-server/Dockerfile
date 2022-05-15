@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libpng-dev \
     libjpeg-dev \
+    libtiff-dev \
+    libx11-dev \
     libgit2-dev \
     libssh2-1-dev \
     pkg-config \
