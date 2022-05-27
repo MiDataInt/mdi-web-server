@@ -1,14 +1,14 @@
 # Michigan Data Interface
 
 The [Michigan Data Interface](https://midataint.github.io/) (MDI) 
-is a framework for developing, installing and running a variety of 
-HPC data analysis pipelines and interactive R Shiny data visualization 
-applications within a standardized design and implementation interface.
+is a framework for developing, installing and running 
+HPC data analysis pipelines and interactive visualization 
+applications within a standardized design interface.
 
-Data analysis in the MDI is separated into 
+The MDI is separated into 
 [two stages of code execution](https://midataint.github.io/docs/analysis-flow/) 
 called Stage 1 HPC **pipelines** and Stage 2 web applications (i.e., **apps**).
-Collectively, pipelines and apps are referred to as **tools**.
+Collectively, pipelines and apps are known as **tools**.
 
 ## Repository contents
 
@@ -17,7 +17,7 @@ It will help you create a publicly addressable web server to run the MDI
 web page with secure access by providing scripts to build and run a series of 
 Docker containers.
 
-## General Description
+## General description
 
 ### Microservices run as Docker containers
 
@@ -32,25 +32,25 @@ and routes requests to the other microservices.
 - <https://docs.traefik.io/>
 
 Other containers run the MDI, i.e., R Shiny, and other required 
-support services. This repository has all files needed to easily 
+support services. This repository has all files needed to 
 build and manage all microservice images.
 
-## Installation and Use
+## Installation and use
 
 ### Host machine (AWS EC2 recommended)
 
 The MDI web server will run on any machine that can run Docker and
-that is addressable on the public internet. However, we recommend using 
+that is addressable on the public internet. We recommend using 
 [Amazon Web Services](https://aws.amazon.com/) (AWS) 
 to run a virtual server in the cloud on an 
 [Elastic Compute Cloud](https://aws.amazon.com/pm/ec2) (EC2) instance.
 
-The MDI maintains AWS Machine Images (AMIs) that make 
+The MDI maintains public AWS Machine Images (AMIs) that make 
 it easy to launch a public server instance.
 The AMIs already carry this mdi-web-server repository,
 so you don't need to clone it yourself. Detailed instructions can be found here:
 
-PENDING
+- https://github.com/MiDataInt/mdi-aws-ami
 
 Briefly, you will:
 - use an MDI AMI to launch your AWS EC2 instance
