@@ -1,8 +1,8 @@
 # build all required Docker images
-# passes all command line options to 'server build' on to 'docker-compose build'
+# passes all command line options to 'server build' on to 'docker compose build'
 #     complete list below
 #     most useful is '--no-cache' to force rebuild without using cache of intermediate images
-docker-compose build \
+docker compose build \
   --build-arg MDI_DIR=$MDI_DIR \
   --build-arg R_VERSION=$R_VERSION \
   --build-arg GITHUB_PAT=$GITHUB_PAT $@

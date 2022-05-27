@@ -2,7 +2,7 @@
 ARG R_VERSION
 FROM r-base:$R_VERSION
 
-# suppress a docker-compose build warning that build-args R_VERSION was not consumed
+# suppress a docker compose build warning that build-args R_VERSION was not consumed
 ARG R_VERSION
 
 # prepare the system to install R packages

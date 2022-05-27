@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------
-# docker-compose file that declares the MDI web services
+# docker compose file that declares the MDI web services
 #------------------------------------------------------------------------
 version: "3.9"
 
