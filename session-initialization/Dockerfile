@@ -1,5 +1,5 @@
 # small footprint JS node image
-FROM node:17.1-alpine3.12
+FROM node:18.2-alpine3.14
 
 # install express
 ENV SERVICE_DIR /opt/node

@@ -10,7 +10,7 @@ export WEBMASTER_EMAIL="example@umich.edu"
 export WEB_DOMAIN="example.org"
 
 # version of R used to run the MDI web server and all apps
-export R_VERSION="4.1.0"
+export R_VERSION="4.2.0"
 
 # number of MDI, i.e., R Shiny, server processes to run
 # 1 process per 2 CPUs is a good choice, but you can overload more aggressively
