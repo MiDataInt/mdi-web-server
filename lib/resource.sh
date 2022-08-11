@@ -25,7 +25,7 @@ fi
 
 # go
 cd mdi-web-server
-docker-compose run \
+docker compose run \
   --no-deps \
   --rm \
   --volume $MDI_DIR/resource-scripts:/srv/resource-scripts \

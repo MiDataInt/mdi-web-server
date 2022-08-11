@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------
-# docker-compose file that declares the MDI web services
+# docker compose file that declares the MDI web services
 #------------------------------------------------------------------------
 version: "3.9"
 
@@ -8,7 +8,7 @@ services:
 
   # Traefik reverse proxy and load balancer
   traefik:
-    image: traefik:v2.5
+    image: traefik:v2.7
     depends_on:
       - docker-proxy
     restart: always      

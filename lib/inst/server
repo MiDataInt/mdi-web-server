@@ -9,7 +9,7 @@ function show_usage {
     echo
     echo "server execution commands (in order of usage):"
     echo "    edit      use nano to edit one of the server configuration files"    
-    echo "    build     run docker-compose build to create all needed Docker images"
+    echo "    build     run docker compose build to create all needed Docker images"
     echo "    install   update the server config, clone GitHub repos, install R packages"
     echo "    up        launch all containers to run the MDI apps server"
     echo "    down      stop and remove any running containers to shut down the apps server"
