@@ -1,18 +1,9 @@
-# Michigan Data Interface
+# MDI AWS Public Server Support
 
 The [Michigan Data Interface](https://midataint.github.io/) (MDI) 
-is a framework for developing, installing and running a variety of 
-HPC data analysis pipelines and interactive R Shiny data visualization 
-applications within a standardized design and implementation interface.
-
-Data analysis in the MDI is separated into 
-[two stages of code execution](https://midataint.github.io/docs/analysis-flow/) 
-called Stage 1 HPC **pipelines** and Stage 2 web applications (i.e., **apps**).
-Collectively, pipelines and apps are referred to as **tools**.
-Please read the [MDI documentation](https://midataint.github.io/) for 
-more information.
-
-## Repository contents
+is a framework for developing, installing and running 
+Stage 1 HPC **pipelines** and Stage 2 interactive web applications 
+(i.e., **apps**) in a standardized design interface.
 
 This is the repository for the **MDI apps public server**. 
 It will help you create a publicly addressable web server to run the MDI
@@ -20,7 +11,7 @@ web page with secure access, e.g., on an Amazon Web Services (AWS) instance.
 It does this by providing scripts to build and run a series of 
 Docker containers.
 
-## General Description
+## General description
 
 ### Microservices run as Docker containers
 
@@ -38,7 +29,7 @@ Other containers run the MDI, i.e., R Shiny, and other required
 support services. This repository has all files needed to easily 
 build and manage all microservice images.
 
-## Installation and Use
+## Installation and use
 
 ### Host machine (AWS EC2 recommended)
 
