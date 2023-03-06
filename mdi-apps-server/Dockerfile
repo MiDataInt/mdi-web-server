@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libtiff-dev \
+    libmagick++-dev \
     libx11-dev \
     libgit2-dev \
     libssh2-1-dev \
