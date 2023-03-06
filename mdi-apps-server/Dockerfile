@@ -57,6 +57,7 @@ WORKDIR $TOOLS_DIR
 # add scripts to install, update and modify the MDI
 COPY ./install-mdi.sh $TOOLS_DIR/install-mdi.sh
 COPY ./get-resource.sh $TOOLS_DIR/get-resource.sh
+COPY ./update-config.sh $TOOLS_DIR/update-config.sh
 
 # add the server startup script
 COPY ./start-app-server.R $TOOLS_DIR/start-app-server.R
