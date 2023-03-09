@@ -95,6 +95,33 @@ services:
       - traefik.http.services.app-server.loadbalancer.sticky.cookie.httpOnly=true
       - traefik.http.services.app-server.loadbalancer.sticky.cookie.sameSite=strict
 
+  # # optional static file server that operates in parallel to the Shiny apps; uncomment to activate
+  # file-server:
+  #   image: halverneus/static-file-server:latest
+  #   networks:
+  #       - public-server   
+  #   volumes:
+  #     - /srv/files:/srv/files    
+  #   environment:
+  #     # generally leave these settings as is and place target files in /srv/files
+  #     FOLDER: /srv/files
+  #     URL_PREFIX: "/files"      
+  #     PORT: 8081
+  #     # adjust these settings if you'd like to support a landing page (index.html) and/or file browsing
+  #     ALLOW_INDEX: false
+  #     SHOW_LISTING: false
+  #     # adjust these settings if you would like to restrict file access; the default options create a public file server
+  #     CORS: false
+  #     REFERRERS: ""
+  #     ACCESS_KEY: ""
+  #   labels:
+  #     - traefik.enable=true  
+  #     - "traefik.http.routers.file-server.rule=Host(`${WEB_DOMAIN}`) && PathPrefix(`/files/`)"
+  #     - traefik.http.routers.file-server.entryPoints=https
+  #     - traefik.http.routers.file-server.tls.certresolver=letsencrypt      
+  #     - traefik.http.services.file-server.loadbalancer.server.scheme=http
+  #     - traefik.http.services.file-server.loadbalancer.server.port=8081
+
   # # test container for debugging this compose stack
   # whoami:
   #   image: traefik/whoami
