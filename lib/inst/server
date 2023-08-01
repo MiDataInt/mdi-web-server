@@ -8,6 +8,7 @@ function show_usage {
     echo "usage:  ./server <COMMAND> ..."
     echo
     echo "server execution commands (in order of usage):"
+    echo "    upgrade   use apt to install all updated system libraries and security patches"  
     echo "    edit      use nano to edit one of the server configuration files"    
     echo "    build     run docker compose build to create all needed Docker images"
     echo "    install   update the server config, clone GitHub repos, install R packages"
