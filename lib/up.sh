@@ -9,6 +9,11 @@ if [ "$1" != "" ]; then
   export N_SERVER_PROCESSES=1
 fi
 
+# prepare for any potential bind mounts requested by config
+sudo mkdir -p /srv/mnt # used in docker-compose.yml
+BIND_MOUNT=$MDI_DIR/config/mount.sh
+if [ -f "$BIND_MOUNT" ]; then bash $BIND_MOUNT; fi
+
 # launch server
 docker compose \
   --env-file ../config/server.sh \

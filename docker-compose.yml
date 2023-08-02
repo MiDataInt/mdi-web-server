@@ -80,7 +80,9 @@ services:
       # this permanent Docker volume stores the MDI apps installation, R packages, etc.
       - mdi-dir:${MDI_DIR}
       # this bind mount is ideal for data transfers into and out of the web page
-      - /srv/data:/srv/data     
+      - /srv/data:/srv/data
+      # this bind mount supports external drive mounts, e.g., via AWS EFS
+      - /srv/mnt:/srv/mnt
     labels:
       - traefik.enable=true
       # low priority, allow other services first chance at routing
