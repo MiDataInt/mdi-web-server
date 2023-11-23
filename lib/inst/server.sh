@@ -25,3 +25,9 @@ export N_SERVER_PROCESSES=2
 export GITHUB_PAT=""
 
 # !! your PAT is exposed in your Docker image, do not share the _image_ publicly !!
+
+# GitHub user information to clone developer forks of repos and enable push of code edits
+# for developers only; only one GitHub user can be specific per server instance
+export GIT_USER=""
+export USER_NAME=""
+export USER_EMAIL=""

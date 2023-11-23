@@ -5,7 +5,10 @@
 docker compose build \
   --build-arg MDI_DIR=$MDI_DIR \
   --build-arg R_VERSION=$R_VERSION \
-  --build-arg GITHUB_PAT=$GITHUB_PAT $@
+  --build-arg GITHUB_PAT=$GITHUB_PAT \
+  --build-arg GIT_USER=$GIT_USER \
+  --build-arg USER_NAME="$USER_NAME" \
+  --build-arg USER_EMAIL=$USER_EMAIL $@
 
 # --build-arg key=val     Set build-time variables for services.
 # --compress              Compress the build context using gzip.

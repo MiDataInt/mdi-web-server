@@ -76,6 +76,7 @@ services:
     environment:
       - WEB_DOMAIN
       - IS_DEBUG
+      - IS_DEVELOPER
     volumes:
       # this permanent Docker volume stores the MDI apps installation, R packages, etc.
       - mdi-dir:${MDI_DIR}

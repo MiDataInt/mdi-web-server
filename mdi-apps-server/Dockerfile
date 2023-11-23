@@ -44,6 +44,12 @@ RUN rm -f /tmp/Rtmp*/downloaded_packages/*.tar.gz
 # set GitHub credentials
 ARG GITHUB_PAT
 ENV GITHUB_PAT=$GITHUB_PAT
+ARG GIT_USER
+ENV GIT_USER=$GIT_USER
+ARG USER_NAME
+ENV USER_NAME=$USER_NAME
+ARG USER_EMAIL
+ENV USER_EMAIL=$USER_EMAIL
 
 # hard set installation directory in image
 ARG MDI_DIR
