@@ -8,6 +8,7 @@ if [ "$1" != "" ]; then
   DETACH="" # thus, docker compose shows debug app-server log in console
   export IS_DEBUG="TRUE" 
   export N_SERVER_PROCESSES=1
+  trap 'server down; server ls' EXIT
 fi
 if [[ "$1" == "dev" || "$1" == "develop" || "$1" == "developer" ]]; then
   export IS_DEVELOPER="TRUE" 
