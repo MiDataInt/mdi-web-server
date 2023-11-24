@@ -80,6 +80,8 @@ services:
     volumes:
       # this permanent Docker volume stores the MDI apps installation, R packages, etc.
       - mdi-dir:${MDI_DIR}
+      # this permanent Docker volume stores the VS Code Server installation for editing code
+      - vscode-server:/root/.vscode-server
       # this bind mount is ideal for data transfers into and out of the web page
       - /srv/data:/srv/data
       # this bind mount supports external drive mounts, e.g., via AWS EFS
@@ -147,6 +149,8 @@ volumes:
   TLS-certificates:
   # ... to install the MDI and store its shared working libraries, data, etc.
   mdi-dir:
+  # ... to support Dev Containers: Attach to Running Container via a persistent VS Code Server installation
+  vscode-server:
 
 # declare Docker networks ...
 networks:

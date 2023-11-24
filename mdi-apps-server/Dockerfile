@@ -68,6 +68,9 @@ COPY ./update-config.sh $TOOLS_DIR/update-config.sh
 # add the server startup script
 COPY ./start-app-server.R $TOOLS_DIR/start-app-server.R
 
+# set up .bashrc when working interactively in bash in container
+RUN echo 'alias ll="ls -alF"' >> ~/.bashrc 
+
 # if this image is run as a container manually, just provide a command line
 # start-app-server.R is called via 'command' in docker-compose.yml
 CMD ["/bin/bash"]
