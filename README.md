@@ -1,60 +1,28 @@
-# MDI AWS Public Server Support
+# MDI AWS Public Web Server Support
 
 The [Michigan Data Interface](https://midataint.github.io/) (MDI) 
 is a framework for developing, installing and running 
 Stage 1 HPC **pipelines** and Stage 2 interactive web applications 
 (i.e., **apps**) in a standardized design interface.
 
-This is the repository for the **MDI apps public server**. 
-It will help you create a publicly addressable web server to run the MDI
-web page with secure access by providing scripts to build and run a series of 
-Docker containers.
+The MDI offers code and pre-built machine images (AMIs) for quickly launching Stage 2 Apps 
+in a public-facing web server hosted on 
+[Amazon Web Services](https://aws.amazon.com/) (AWS). 
+There are two relevant MDI repositories:
+- [mdi-aws-ami](https://github.com/MiDataInt/mdi-aws-ami/), which carries code used to build the AMIs
+- [mdi-web-server](https://github.com/MiDataInt/mdi-web-server/), which carries code placed into the AMIs to manage and launch the web server
 
-## General description
+This is the latter repository for the **MDI apps public web server**. 
+It was developed for use in the AWS AMIs, but could also be used to launch
+a secure web server on any machine that can run Docker and
+that is addressable on the public internet.
 
-### Microservices run as Docker containers
+Detailed instructions covering both the `mdi-aws-ami` and `mdi-web-server` repositories
+can be found here:
 
-The web server is run as a set of microservices from within
-Docker containers. 
+- <https://midataint.github.io/mdi-aws-ami>
 
-- <https://www.docker.com/>
+You will also need to be familiar with the `mdi-apps-framework`,
+which carries the R code that runs the web page itself.
 
-One container runs the Traefik reverse proxy/load balancer
-and routes requests to the other microservices.
-
-- <https://docs.traefik.io/>
-
-Other containers run the MDI, i.e., R Shiny, and other required 
-support services. This repository has all files needed to 
-build and manage all microservice images.
-
-## Installation and use
-
-### Host machine (AWS EC2 recommended)
-
-The MDI web server will run on any machine that can run Docker and
-that is addressable on the public internet. We recommend using 
-[Amazon Web Services](https://aws.amazon.com/) (AWS) 
-to run a virtual server in the cloud on an 
-[Elastic Compute Cloud](https://aws.amazon.com/pm/ec2) (EC2) instance.
-
-The MDI maintains public AWS Machine Images (AMIs) that make 
-it easy to launch a public server instance.
-The AMIs already carry this mdi-web-server repository,
-so you don't need to clone it yourself. Detailed instructions can be found here:
-
-- https://github.com/MiDataInt/mdi-aws-ami
-
-Briefly, you will:
-- use an MDI AMI to launch your AWS EC2 instance
-- edit a few files to establish server configuration details (e.g., your web domain)
-- make your site live
-
-### Public URL access
-
-To use external authentication services, e.g., Google or Globus, 
-your server must have a permanent internet domain name mapped to it 
-via DNS. This allows SSL/TLS encryption security via 
-[Let's Encrypt](https://letsencrypt.org/).
-A domain name is easily obtained using 
-[AWS Route 53](https://console.aws.amazon.com/route53/v2/home).
+- <https://midataint.github.io/mdi-apps-framework>
