@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     libx11-dev \
     libgit2-dev \
     libssh2-1-dev \
+    libglpk-dev \
     pkg-config \
     build-essential \
     git \
@@ -34,7 +35,8 @@ RUN apt-get update && apt-get install -y \
 # install 'remotes' to support R package installation from GitHub
 RUN Rscript -e "install.packages('remotes', Ncpus = "`nproc`")"
 
-# install the installation manager
+# install the MDI installation manager
+# increment MANAGER_INSTALL_HOOK to force mdi-manager to update on the next call to "server build"
 ENV MANAGER_INSTALL_HOOK=1
 RUN Rscript -e "remotes::install_github('MiDataInt/mdi-manager', Ncpus = "`nproc`")"
 

@@ -11,8 +11,11 @@ export N_CPU=`nproc`
 # set environment variable to honor system library in server images
 export MDI_SYSTEM_R_LIBRARY=/usr/local/lib/R/site-library
 
-# update the installation manager, if new since Docker image was created
-Rscript -e "remotes::install_github('MiDataInt/mdi-manager', Ncpus = $N_CPU)"
+# if requested, update the MDI installation manager, if new since Docker image was created
+# this is not commonly necessary since mdi::install and mdi::run are quite stable
+# most often, a dependency update will force mdi-manager to re-install, not changes to mdi-manager itself
+# see also MANAGER_INSTALL_HOOK in mdi-apps-server/Dockerfile to force an update at image build
+Rscript -e "if(nzchar(Sys.getenv('UPDATE_MDI_MANAGER'))) remotes::install_github('MiDataInt/mdi-manager', Ncpus = $N_CPU)"
 
 # use the manager to install the MDI repositories and R packages
 Rscript -e "mdi::install(Sys.getenv('MDI_DIR'), confirm = FALSE)"
