@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     libgit2-dev \
     libssh2-1-dev \
     libglpk-dev \
+    libuv1-dev \
     pkg-config \
     build-essential \
     git \
